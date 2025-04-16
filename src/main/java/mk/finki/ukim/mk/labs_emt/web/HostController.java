@@ -2,9 +2,11 @@ package mk.finki.ukim.mk.labs_emt.web;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import mk.finki.ukim.mk.labs_emt.model.Host;
-import mk.finki.ukim.mk.labs_emt.model.dto.HostDto;
-import mk.finki.ukim.mk.labs_emt.service.HostService;
+import mk.finki.ukim.mk.labs_emt.dto.CreateHostDto;
+import mk.finki.ukim.mk.labs_emt.dto.DisplayHostDto;
+import mk.finki.ukim.mk.labs_emt.model.domain.Host;
+import mk.finki.ukim.mk.labs_emt.service.application.HostAppService;
+import mk.finki.ukim.mk.labs_emt.service.domain.HostService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,22 +17,23 @@ import java.util.List;
 @Tag(name = "Hosts",description = "Manage host's information")
 public class HostController {
 
-    private final HostService hostService;
+    private final HostAppService hostService;
 
-    public HostController(HostService hostService) {
+    public HostController(HostAppService hostService) {
         this.hostService = hostService;
     }
 
+
     @GetMapping
     @Operation(summary = "Show all the hosts")
-    public List<Host> findAll()
+    public List<DisplayHostDto> findAll()
     {
         return hostService.findALl();
     }
 
     @GetMapping("/{id}")
     @Operation(summary = "Show the host by its id")
-    public ResponseEntity<Host> findById(@PathVariable Long id)
+    public ResponseEntity<DisplayHostDto> findById(@PathVariable Long id)
     {
         return hostService.findById(id)
                 .map(ResponseEntity::ok)
@@ -39,7 +42,7 @@ public class HostController {
 
     @PostMapping("/add")
     @Operation(summary = "Add a new host to the list")
-    public ResponseEntity<Host> save (Host host)
+    public ResponseEntity<DisplayHostDto> save (@RequestBody CreateHostDto host)
     {
         return hostService.save(host)
                 .map(ResponseEntity::ok)
@@ -47,7 +50,7 @@ public class HostController {
     }
     @PutMapping("/edit/{id}")
     @Operation(summary = "Edit an existing host by its id")
-    public ResponseEntity<Host> update (@PathVariable Long id, @RequestBody HostDto host)
+    public ResponseEntity<DisplayHostDto> update (@PathVariable Long id, @RequestBody CreateHostDto host)
     {
         return hostService.update(id, host)
                 .map(ResponseEntity::ok)

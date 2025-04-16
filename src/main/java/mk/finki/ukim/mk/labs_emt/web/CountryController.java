@@ -2,9 +2,11 @@ package mk.finki.ukim.mk.labs_emt.web;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import mk.finki.ukim.mk.labs_emt.model.Country;
-import mk.finki.ukim.mk.labs_emt.model.dto.CountryDto;
-import mk.finki.ukim.mk.labs_emt.service.CountryService;
+import mk.finki.ukim.mk.labs_emt.dto.CreateCountryDto;
+import mk.finki.ukim.mk.labs_emt.dto.DisplayCountryDto;
+import mk.finki.ukim.mk.labs_emt.model.domain.Country;
+import mk.finki.ukim.mk.labs_emt.service.application.CountryAppService;
+import mk.finki.ukim.mk.labs_emt.service.domain.CountryService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,22 +17,22 @@ import java.util.List;
 @Tag(name = "Country", description = "Manage Country information")
 public class CountryController {
 
-    private final CountryService countryService;
+    private final CountryAppService countryService;
 
-    public CountryController(CountryService countryService) {
+    public CountryController(CountryAppService countryService) {
         this.countryService = countryService;
     }
 
     @GetMapping
     @Operation(summary = "Show all countries")
-    public List<Country> getAllCountries()
+    public List<DisplayCountryDto> getAllCountries()
     {
         return countryService.findAll();
     }
 
     @GetMapping("/{id}")
     @Operation(summary = "Show a country by its id")
-    public ResponseEntity<Country> findById(@PathVariable Long id)
+    public ResponseEntity<DisplayCountryDto> findById(@PathVariable Long id)
     {
         return countryService.findById(id)
                 .map(ResponseEntity::ok)
@@ -38,7 +40,7 @@ public class CountryController {
     }
     @PostMapping("/add")
     @Operation(summary = "Add a new country to the list")
-    public ResponseEntity<Country> save (@RequestBody Country country)
+    public ResponseEntity<DisplayCountryDto> save (@RequestBody CreateCountryDto country)
     {
         return countryService.save(country)
                 .map(ResponseEntity::ok)
@@ -46,7 +48,7 @@ public class CountryController {
     }
     @PutMapping("/edit/{id}")
     @Operation(summary = "Edit an existing country by its id")
-    public ResponseEntity<Country> update (@PathVariable Long id, @RequestBody Country country)
+    public ResponseEntity<DisplayCountryDto> update (@PathVariable Long id, @RequestBody CreateCountryDto country)
     {
         return countryService.update(id,country)
                 .map(ResponseEntity::ok)

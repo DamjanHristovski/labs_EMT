@@ -1,10 +1,9 @@
-package mk.finki.ukim.mk.labs_emt.service.impl;
+package mk.finki.ukim.mk.labs_emt.service.domain.impl;
 
-import mk.finki.ukim.mk.labs_emt.model.Host;
-import mk.finki.ukim.mk.labs_emt.model.dto.HostDto;
+import mk.finki.ukim.mk.labs_emt.model.domain.Host;
 import mk.finki.ukim.mk.labs_emt.repository.HostRepository;
-import mk.finki.ukim.mk.labs_emt.service.CountryService;
-import mk.finki.ukim.mk.labs_emt.service.HostService;
+import mk.finki.ukim.mk.labs_emt.service.domain.CountryService;
+import mk.finki.ukim.mk.labs_emt.service.domain.HostService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -37,20 +36,20 @@ public class HostServiceImpl implements HostService {
     }
 
     @Override
-    public Optional<Host> update(Long id, HostDto hostDto) {
+    public Optional<Host> update(Long id, Host hostDto) {
         return this.hostRepository.findById(id).map(
                 existingHost -> {
-                    if (hostDto.getHost_name() != null)
+                    if (hostDto.getName() != null)
                     {
-                        existingHost.setName(hostDto.getHost_name());
+                        existingHost.setName(hostDto.getName());
                     }
-                    if (hostDto.getHost_surname() != null)
+                    if (hostDto.getSurname() != null)
                     {
-                        existingHost.setSurname(hostDto.getHost_surname());
+                        existingHost.setSurname(hostDto.getSurname());
                     }
-                    if (countryService.findById(hostDto.getCountry_id()).isPresent())
+                    if (countryService.findById(hostDto.getCountry().getCountry_id()).isPresent())
                     {
-                        existingHost.setCountry(countryService.findById(hostDto.getCountry_id()).get());
+                        existingHost.setCountry(countryService.findById(hostDto.getCountry().getCountry_id()).get());
                     }
                     return this.hostRepository.save(existingHost);
                 }

@@ -1,8 +1,8 @@
-package mk.finki.ukim.mk.labs_emt.service.impl;
+package mk.finki.ukim.mk.labs_emt.service.domain.impl;
 
-import mk.finki.ukim.mk.labs_emt.model.Country;
+import mk.finki.ukim.mk.labs_emt.model.domain.Country;
 import mk.finki.ukim.mk.labs_emt.repository.CountryRepository;
-import mk.finki.ukim.mk.labs_emt.service.CountryService;
+import mk.finki.ukim.mk.labs_emt.service.domain.CountryService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

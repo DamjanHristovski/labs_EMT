@@ -2,9 +2,11 @@ package mk.finki.ukim.mk.labs_emt.web;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import mk.finki.ukim.mk.labs_emt.model.Accommodation;
-import mk.finki.ukim.mk.labs_emt.model.dto.AccommodationDto;
-import mk.finki.ukim.mk.labs_emt.service.AccommodationService;
+import mk.finki.ukim.mk.labs_emt.dto.CreateAccommodationDto;
+import mk.finki.ukim.mk.labs_emt.dto.DisplayAccommodationDto;
+import mk.finki.ukim.mk.labs_emt.model.domain.Accommodation;
+import mk.finki.ukim.mk.labs_emt.service.application.AccommodationAppService;
+import mk.finki.ukim.mk.labs_emt.service.domain.AccommodationService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,21 +16,21 @@ import java.util.List;
 @RequestMapping("/api/accommodations")
 @Tag(name = "Accommodations", description = "Manage accommodation's information")
 public class AccommodationController {
-    private final AccommodationService accommodationService;
+    private final AccommodationAppService accommodationService;
 
-    public AccommodationController(AccommodationService accommodationService) {
-        this.accommodationService = accommodationService;
+    public AccommodationController(AccommodationAppService accommodationAppService) {
+        this.accommodationService = accommodationAppService;
     }
 
     @GetMapping
     @Operation(summary = "Show all accommodations")
-    public List<Accommodation> getAllAccommodations() {
-        return accommodationService.findAll();
+    public List<DisplayAccommodationDto> getAllAccommodations() {
+        return this.accommodationService.findAll();
     }
 
     @GetMapping("/{id}")
     @Operation(summary = "Find an accommodation by its id")
-    private ResponseEntity<Accommodation> findById(@PathVariable Long id) {
+    private ResponseEntity<DisplayAccommodationDto> findById(@PathVariable Long id) {
         return accommodationService.findById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
@@ -36,7 +38,7 @@ public class AccommodationController {
 
     @PostMapping("/add")
     @Operation(summary = "Add a new accommodation")
-    public ResponseEntity<Accommodation> save (@RequestBody AccommodationDto accommodation)
+    public ResponseEntity<DisplayAccommodationDto> save (@RequestBody CreateAccommodationDto accommodation)
     {
         return accommodationService.save(accommodation)
                 .map(ResponseEntity::ok)
@@ -45,7 +47,7 @@ public class AccommodationController {
 
     @PutMapping("/edit/{id}")
     @Operation(summary = "Edit an existing accommodation by its id")
-    public ResponseEntity<Accommodation> update(@PathVariable Long id, @RequestBody AccommodationDto accommodation)
+    public ResponseEntity<DisplayAccommodationDto> update(@PathVariable Long id, @RequestBody CreateAccommodationDto accommodation)
     {
         return accommodationService.update(id, accommodation)
                 .map(ResponseEntity::ok)
@@ -53,7 +55,7 @@ public class AccommodationController {
     }
     @PutMapping("/mark/{id}")
     @Operation(summary = "Mark an accommodation by its id")
-    public ResponseEntity<Accommodation> markAsRented(@PathVariable Long id)
+    public ResponseEntity<DisplayAccommodationDto> markAsRented(@PathVariable Long id)
     {
         return accommodationService.markAsRented(id)
                 .map(ResponseEntity::ok)

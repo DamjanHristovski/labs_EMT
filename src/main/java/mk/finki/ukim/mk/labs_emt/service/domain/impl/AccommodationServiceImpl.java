@@ -1,13 +1,11 @@
-package mk.finki.ukim.mk.labs_emt.service.impl;
+package mk.finki.ukim.mk.labs_emt.service.domain.impl;
 
-import mk.finki.ukim.mk.labs_emt.model.Accommodation;
+import mk.finki.ukim.mk.labs_emt.model.domain.Accommodation;
 import mk.finki.ukim.mk.labs_emt.model.Enum.Categories;
-import mk.finki.ukim.mk.labs_emt.model.Host;
-import mk.finki.ukim.mk.labs_emt.model.dto.AccommodationDto;
+import mk.finki.ukim.mk.labs_emt.model.domain.Host;
 import mk.finki.ukim.mk.labs_emt.repository.AccommodationRepository;
-import mk.finki.ukim.mk.labs_emt.service.AccommodationService;
-import mk.finki.ukim.mk.labs_emt.service.CountryService;
-import mk.finki.ukim.mk.labs_emt.service.HostService;
+import mk.finki.ukim.mk.labs_emt.service.domain.AccommodationService;
+import mk.finki.ukim.mk.labs_emt.service.domain.HostService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,16 +23,16 @@ public class AccommodationServiceImpl implements AccommodationService {
     }
 
     @Override
-    public Optional<Accommodation> save(AccommodationDto accommodation) {
-        if (accommodation.getAccommodation_name() != null &&
-            accommodation.getCategory() != null && accommodation.getRented() != null
-                && this.hostService.findById(accommodation.getHost_id()).isPresent()
+    public Optional<Accommodation> save(Accommodation accommodation) {
+        if (accommodation.getName() != null &&
+                accommodation.getCategory() != null && accommodation.getRented() != null
+                && this.hostService.findById(accommodation.getHost().getId()).isPresent()
                 && accommodation.getNumRooms() != null)
         {
-            Host host = this.hostService.findById(accommodation.getHost_id()).get();
+            Host host = this.hostService.findById(accommodation.getHost().getId()).get();
             return Optional.of(
                     this.accommodationRepository.save(
-                            new Accommodation(accommodation.getAccommodation_name(), Categories.valueOf(accommodation.getCategory()),host,accommodation.getNumRooms(),accommodation.getRented())
+                            new Accommodation(accommodation.getName(), Categories.valueOf(accommodation.getCategory().toString()),host,accommodation.getNumRooms(),accommodation.getRented())
                     )
             );
         }
@@ -64,12 +62,12 @@ public class AccommodationServiceImpl implements AccommodationService {
     }
 
     @Override
-    public Optional<Accommodation> update(Long id, AccommodationDto accommodation) {
+    public Optional<Accommodation> update(Long id, Accommodation accommodation) {
         return this.accommodationRepository.findById(id).map(
                 existingAccommodation -> {
-                    if (accommodation.getAccommodation_name() != null)
+                    if (accommodation.getName() != null)
                     {
-                        existingAccommodation.setName(accommodation.getAccommodation_name());
+                        existingAccommodation.setName(accommodation.getName());
                     }
                     if (accommodation.getRented() != null)
                     {
@@ -78,13 +76,13 @@ public class AccommodationServiceImpl implements AccommodationService {
                     if (accommodation.getNumRooms() != null){
                         existingAccommodation.setNumRooms(accommodation.getNumRooms());
                     }
-                    if (this.hostService.findById(accommodation.getHost_id()).isPresent())
+                    if (this.hostService.findById(accommodation.getHost().getId()).isPresent())
                     {
-                        existingAccommodation.setHost(this.hostService.findById(accommodation.getHost_id()).get());
+                        existingAccommodation.setHost(this.hostService.findById(accommodation.getHost().getId()).get());
                     }
                     if (accommodation.getCategory() != null)
                     {
-                        existingAccommodation.setCategory(Categories.valueOf(accommodation.getCategory()));
+                        existingAccommodation.setCategory(Categories.valueOf(accommodation.getCategory().toString()));
                     }
                     return accommodationRepository.save(existingAccommodation);
                 }

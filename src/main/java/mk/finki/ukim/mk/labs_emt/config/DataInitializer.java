@@ -1,15 +1,14 @@
 package mk.finki.ukim.mk.labs_emt.config;
 
 import jakarta.annotation.PostConstruct;
-import mk.finki.ukim.mk.labs_emt.model.Accommodation;
-import mk.finki.ukim.mk.labs_emt.model.Country;
+import mk.finki.ukim.mk.labs_emt.model.domain.Accommodation;
+import mk.finki.ukim.mk.labs_emt.model.domain.Country;
 import mk.finki.ukim.mk.labs_emt.model.Enum.Categories;
-import mk.finki.ukim.mk.labs_emt.model.Host;
+import mk.finki.ukim.mk.labs_emt.model.domain.Host;
 import mk.finki.ukim.mk.labs_emt.repository.AccommodationRepository;
 import mk.finki.ukim.mk.labs_emt.repository.CountryRepository;
 import mk.finki.ukim.mk.labs_emt.repository.HostRepository;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Controller;
 
 @Component
 public class DataInitializer{
