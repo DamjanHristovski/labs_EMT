@@ -1,9 +1,6 @@
 package mk.finki.ukim.mk.labs_emt.model.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Data;
 import mk.finki.ukim.mk.labs_emt.model.Enum.Role;
 import org.springframework.security.core.GrantedAuthority;
@@ -15,6 +12,7 @@ import java.util.List;
 
 @Data
 @Entity
+@Table(name = "app_user")
 public class User implements UserDetails{
 
     @Id

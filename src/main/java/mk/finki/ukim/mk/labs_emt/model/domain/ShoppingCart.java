@@ -34,4 +34,44 @@ public class ShoppingCart {
     public ShoppingCart() {
 
     }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public LocalDateTime getDateCreated() {
+        return dateCreated;
+    }
+
+    public void setDateCreated(LocalDateTime dateCreated) {
+        this.dateCreated = dateCreated;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public List<Accommodation> getAccommodationList() {
+        return accommodationList;
+    }
+
+    public void setAccommodationList(List<Accommodation> accommodationList) {
+        this.accommodationList = accommodationList;
+    }
+
+    public ShoppingCartStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(ShoppingCartStatus status) {
+        this.status = status;
+    }
 }
