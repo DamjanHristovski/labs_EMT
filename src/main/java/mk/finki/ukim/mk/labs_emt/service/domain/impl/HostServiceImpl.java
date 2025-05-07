@@ -1,5 +1,6 @@
 package mk.finki.ukim.mk.labs_emt.service.domain.impl;
 
+import mk.finki.ukim.mk.labs_emt.model.Projections.HostNameProjection;
 import mk.finki.ukim.mk.labs_emt.model.domain.Host;
 import mk.finki.ukim.mk.labs_emt.repository.HostRepository;
 import mk.finki.ukim.mk.labs_emt.service.domain.CountryService;
@@ -59,6 +60,11 @@ public class HostServiceImpl implements HostService {
     @Override
     public void deleteById(Long id) {
         this.hostRepository.deleteById(id);
+    }
+
+    @Override
+    public List<HostNameProjection> getAllTheProjected() {
+        return this.hostRepository.findAllProjections();
     }
 
 

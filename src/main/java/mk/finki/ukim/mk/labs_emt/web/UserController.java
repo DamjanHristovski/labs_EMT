@@ -63,4 +63,5 @@ public class UserController {
     {
         request.getSession().invalidate();
     }
+
 }

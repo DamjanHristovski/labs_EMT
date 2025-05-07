@@ -6,7 +6,9 @@ import mk.finki.ukim.mk.labs_emt.dto.CreateAccommodationDto;
 import mk.finki.ukim.mk.labs_emt.dto.DisplayAccommodationDto;
 import mk.finki.ukim.mk.labs_emt.model.domain.Accommodation;
 import mk.finki.ukim.mk.labs_emt.service.application.AccommodationAppService;
+import mk.finki.ukim.mk.labs_emt.service.application.HostAppService;
 import mk.finki.ukim.mk.labs_emt.service.domain.AccommodationService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,9 +19,11 @@ import java.util.List;
 @Tag(name = "Accommodations", description = "Manage accommodation's information")
 public class AccommodationController {
     private final AccommodationAppService accommodationService;
+    private final HostAppService hostAppService;
 
-    public AccommodationController(AccommodationAppService accommodationAppService) {
-        this.accommodationService = accommodationAppService;
+    public AccommodationController(AccommodationAppService accommodationService, HostAppService hostAppService) {
+        this.accommodationService = accommodationService;
+        this.hostAppService = hostAppService;
     }
 
     @GetMapping
@@ -71,5 +75,10 @@ public class AccommodationController {
             return ResponseEntity.ok().build();
         }
         return ResponseEntity.notFound().build();
+    }
+    @GetMapping("/per-host/{id}")
+    @Operation(summary = "Find all the accommodations per host")
+    public ResponseEntity<?> findAccommodationsPerHost(@PathVariable Long id) {
+        return ResponseEntity.status(HttpStatus.OK).body(hostAppService.findAccommodationById(id));
     }
 }

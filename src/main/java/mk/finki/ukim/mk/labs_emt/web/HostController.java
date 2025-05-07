@@ -4,9 +4,13 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import mk.finki.ukim.mk.labs_emt.dto.CreateHostDto;
 import mk.finki.ukim.mk.labs_emt.dto.DisplayHostDto;
+import mk.finki.ukim.mk.labs_emt.model.Projections.HostNameProjection;
 import mk.finki.ukim.mk.labs_emt.model.domain.Host;
+import mk.finki.ukim.mk.labs_emt.repository.HostPerCountryViewRepository;
+import mk.finki.ukim.mk.labs_emt.service.application.CountryAppService;
 import mk.finki.ukim.mk.labs_emt.service.application.HostAppService;
 import mk.finki.ukim.mk.labs_emt.service.domain.HostService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,11 +22,13 @@ import java.util.List;
 public class HostController {
 
     private final HostAppService hostService;
+    private final CountryAppService countryAppService;
 
-    public HostController(HostAppService hostService) {
+
+    public HostController(HostAppService hostService, CountryAppService countryAppService) {
         this.hostService = hostService;
+        this.countryAppService = countryAppService;
     }
-
 
     @GetMapping
     @Operation(summary = "Show all the hosts")
@@ -67,5 +73,19 @@ public class HostController {
             return ResponseEntity.ok().build();
         }
         return ResponseEntity.notFound().build();
+    }
+
+    @GetMapping("/per-country/{id}")
+    @Operation(summary = "Get the number of hosts per country")
+    public ResponseEntity<?> getNumberOfHostsPerCountry(@PathVariable Long id)
+    {
+        return ResponseEntity.status(HttpStatus.OK).body(countryAppService.findHostPerCountry(id));
+    }
+
+    @GetMapping("/names")
+    @Operation(summary = "Names of all the hosts")
+    public List<HostNameProjection> getAllnames()
+    {
+        return hostService.getAllNames();
     }
 }
